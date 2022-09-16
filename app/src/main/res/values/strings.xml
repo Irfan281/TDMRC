@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Tdmrc</string>
+    <string name="daftar"><u>Daftar</u></string>
+    <string name="login_under"><u>Login</u></string>
+    <string name="login">Login</string>
+    <string name="login_desc">Silakan Login untuk melanjutkan</string>
+    <string name="email">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="sudah_punya_akun">Sudah Punya Akun?</string>
+    <string name="belum_punya_akun">Belum Punya Akun?</string>
+    <string name="daftar_plain">Daftar</string>
+    <string name="daftar_desc">Silakan daftar akun terlebih dahulu</string>
+    <string name="nama">Nama</string>
+    <string name="gambar_peta">Gambar Peta</string>
+    <string name="nama_tempat">Nama Tempat tempat tempat</string>
+    <string name="km">1 km</string>
+    <string name="background">background</string>
+    <string name="halo">Halo</string>
+    <string name="nama_akun">Muhammad Irfan</string>
+    <string name="tanggal">12 September 2022</string>
+    <string name="lokasi">Lokasi</string>
+    <string name="desc_1">Tempat Evakuasi Bencana Terdekat</string>
+    <string name="desc2">Segera menuju tempat evakuasi terdekat ketika terjadi bencana.</string>
+    <string name="desc_3">Informasi Gempa Terkini</string>
+    <string name="desc_4">Informasi gempa di Indonesia, Data dihimpun dari BMKG</string>
+    <string name="_4_9">4.9</string>
+    <string name="sr">SR</string>
+    <string name="desc5">Pusat gempa berada di darat 16km barat laut Donggala</string>
+    <string name="kedalaman_16_km">Kedalaman : %1$s</string>
+    <string name="dirasakan">Dirasakan : Toribulu, III Mepanga</string>
+    <string name="date">Senin, 29 Agt 2022 - 12:00</string>
+    <string name="refresh_button">refresh button</string>
+    <string name="splash_time">3000</string>
+
+    <string name="default_lat">00.000000</string>
+    <string name="default_lng">00.000000</string>
+    <string name="enable_gps">Hidupkan GPS</string>
+    <string name="required_for_this_app">Diperlukan dalam Aplikasi Ini</string>
+    <string name="enable_now">Hidupkan</string>
+    <string name="location_permission_not_granted">Location Permission not granted</string>
+
+    <string-array name="lokasi">
+        <item>Banda Aceh, Aceh</item>
+        <item>Aceh Besar, Aceh</item>
+        <item>Nagan Raya, Aceh</item>
+        <item>Aceh Barat, Aceh</item>
+        <item>Aceh Jaya, Aceh</item>
+    </string-array>
+    <string name="title_activity_detail_gempa">DetailGempaActivity</string>
+    <string name="fab">fab</string>
+</resources>
