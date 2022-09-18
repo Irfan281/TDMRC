@@ -23,5 +23,7 @@ data class PetaResponseItem(
 	val id: String,
 
 	@field:SerializedName("Longitude")
-	val longitude: String
+	val longitude: String,
+
+	var jarak: Double
 )

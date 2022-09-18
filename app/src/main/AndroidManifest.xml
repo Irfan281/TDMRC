@@ -20,8 +20,12 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${GMK_KEY}"/>
+            android:value="${GMK_KEY}" />
 
+        <activity
+            android:name=".ui.peta.DetailPetaActivity"
+            android:exported="false"
+            android:label="@string/title_activity_detail_peta" />
         <activity
             android:name=".ui.gempa.DetailGempaActivity"
             android:exported="false"

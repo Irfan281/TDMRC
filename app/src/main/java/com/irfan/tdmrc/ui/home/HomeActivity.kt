@@ -48,6 +48,7 @@ class HomeActivity : AppCompatActivity() {
         ViewModelFactory(SessionPreferences.getInstance(dataStore))
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -107,8 +108,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun setPeta(lat: Double, long: Double) {
+    private fun setPeta(myLat: Double, myLong: Double) {
         val petaAdapter = GroupieAdapter()
 
         homeViewModel.getUserToken().observe(this){
@@ -118,8 +118,16 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel.peta.observe(this){
             when(it){
                 is Result.Success<*> -> {
-                    for (i in it.data as MutableList<*>){
-                        petaAdapter.add(PetaItem(i as PetaResponseItem, lat, long))
+                    for (i in it.data as List<PetaResponseItem>){
+                        val results = FloatArray(1)
+                        Location.distanceBetween(myLat, myLong, i.latitude.toDouble(), i.longitude.toDouble(), results)
+                        i.jarak = (results[0] / 1000).toDouble()
+                    }
+
+                    val sortedList = it.data.sortedBy { it.jarak }
+
+                    for (i in sortedList){
+                        petaAdapter.add(PetaItem(i))
                     }
                 }
                 is Result.Loading -> {
@@ -133,12 +141,11 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.rvPeta.apply {
-            isNestedScrollingEnabled = false
             layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = petaAdapter
         }
 
-        petaAdapter.notifyDataSetChanged()
+
     }
 
     private fun setGempa() {
@@ -174,8 +181,6 @@ class HomeActivity : AppCompatActivity() {
         val lokasi = resources.getStringArray(R.array.lokasi)
         val arrayAdapter = ArrayAdapter(this, R.layout.item_dropdown, lokasi)
         binding.actLokasi.setAdapter(arrayAdapter)
-
-        getLocation()
     }
 
     private fun isLocationEnabled(): Boolean {

@@ -30,7 +30,7 @@
     <string name="dirasakan">Dirasakan : Toribulu, III Mepanga</string>
     <string name="date">Senin, 29 Agt 2022 - 12:00</string>
     <string name="refresh_button">refresh button</string>
-    <string name="splash_time">3000</string>
+    <string name="splash_time">500</string>
 
     <string name="default_lat">00.000000</string>
     <string name="default_lng">00.000000</string>
@@ -48,4 +48,5 @@
     </string-array>
     <string name="title_activity_detail_gempa">DetailGempaActivity</string>
     <string name="fab">fab</string>
+    <string name="title_activity_detail_peta">DetailPetaActivity</string>
 </resources>
