@@ -1,22 +1,39 @@
 package com.irfan.tdmrc.ui.peta
 
+import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.recyclerview.widget.GridLayoutManager
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.irfan.tdmrc.BuildConfig
 import com.irfan.tdmrc.R
+import com.irfan.tdmrc.data.remote.PetaResponseItem
 import com.irfan.tdmrc.databinding.ActivityDetailPetaBinding
+import com.tonyakitori.inc.easyroutes.EasyRoutesDirections
+import com.tonyakitori.inc.easyroutes.EasyRoutesDrawer
+import com.tonyakitori.inc.easyroutes.enums.TransportationMode
+import com.tonyakitori.inc.easyroutes.extensions.drawRoute
+import com.tonyakitori.inc.easyroutes.extensions.getGoogleMapsLink
+import com.xwray.groupie.GroupieAdapter
 
 
 class DetailPetaActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: GoogleMap
+    private lateinit var p0: GoogleMap
     private lateinit var binding: ActivityDetailPetaBinding
+
+    private lateinit var peta: PetaResponseItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +45,33 @@ class DetailPetaActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        peta = intent.getParcelableExtra<PetaResponseItem>("peta") as PetaResponseItem
+
+        binding.tvNama.text = peta.lokasi
+
+        val compose = mutableListOf<String>()
+
+        compose.add("Kabupaten:" + peta.kabupaten)
+        compose.add("Desa:" + peta.desa)
+        compose.add("Elevasi:" + peta.elev)
+        compose.add("Kecamatan:" + peta.kecamatan)
+        compose.add("Keterangan:" + peta.keterangan)
+        compose.add("Kondisi:" + peta.kondisi)
+        compose.add("Lokasi:" + peta.lokasi)
+        compose.add("Waktu:" + peta.waktu)
+
+        val detailAdapter = GroupieAdapter()
+
+        for (i in compose){
+            detailAdapter.add(DetailItem(i))
+        }
+
+        binding.rvInfo.apply {
+            layoutManager = GridLayoutManager(this@DetailPetaActivity, 2)
+            adapter = detailAdapter
+        }
+
     }
 
     /**
@@ -39,12 +83,50 @@ class DetailPetaActivity : AppCompatActivity(), OnMapReadyCallback {
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+    override fun onMapReady(p0: GoogleMap) {
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+        val placeDirections = EasyRoutesDirections(
+            originLatLng = LatLng(intent.extras?.get("myLat") as Double, intent.extras?.get("myLong") as Double),
+            destinationLatLng = LatLng(peta.latitude.toDouble(), peta.longitude.toDouble()),
+            apiKey = BuildConfig.GMK_KEY,
+            showDefaultMarkers= true,
+            transportationMode = TransportationMode.DRIVING
+        )
+
+        p0.apply {
+            moveCamera(CameraUpdateFactory.newLatLng(LatLng(peta.latitude.toDouble(), peta.longitude.toDouble())))
+            animateCamera(CameraUpdateFactory.zoomTo( 14.0f ) )
+        }
+
+        val routeDrawer = EasyRoutesDrawer.Builder(p0)
+            .pathWidth(10f)
+            .pathColor(Color.GREEN)
+            .geodesic(true)
+            .previewMode(false)
+            .build()
+
+        val markersList = mutableListOf<Marker>()
+        p0.drawRoute(
+            context = this@DetailPetaActivity,
+            easyRoutesDirections = placeDirections,
+            markersListCallback = {markers -> markersList.addAll(markers)},
+            routeDrawer = routeDrawer,
+            googleMapsLink = { url -> Log.d("GoogleLink", url)}
+        ){ legs ->
+            legs?.forEach {
+                Log.d("Point startAddress:", it?.startAddress.toString())
+                Log.d("Point endAddress:", it?.endAddress.toString())
+                Log.d("Distance:", it?.distance.toString())
+                Log.d("Duration:", it?.duration.toString())
+            }
+        }
+
+        binding.fab.setOnClickListener {
+            val url = getGoogleMapsLink(placeDirections) //EasyRouteDirections instance like parameter
+
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent) //Open google maps native app
+        }
     }
 }

@@ -76,6 +76,7 @@ dependencies {
     //image viewer
     implementation 'com.github.stfalcon-studio:StfalconImageViewer:v1.0.1'
 
+    implementation 'com.github.AntonioHReyes:EasyRoutes:1.0.11'
 
     //Datastore
     implementation "androidx.datastore:datastore-preferences:1.0.0"

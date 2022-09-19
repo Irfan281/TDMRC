@@ -63,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
         setGempa()
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        getLocation()
+
 
         binding.tvDate.text = now().format("dd MMMM yyyy")
 
@@ -122,12 +122,15 @@ class HomeActivity : AppCompatActivity() {
                         val results = FloatArray(1)
                         Location.distanceBetween(myLat, myLong, i.latitude.toDouble(), i.longitude.toDouble(), results)
                         i.jarak = (results[0] / 1000).toDouble()
+
+                        Log.d("data tes", i.lokasi)
+
                     }
 
                     val sortedList = it.data.sortedBy { it.jarak }
 
                     for (i in sortedList){
-                        petaAdapter.add(PetaItem(i))
+                        petaAdapter.add(PetaItem(i, myLat, myLong))
                     }
                 }
                 is Result.Loading -> {
@@ -181,6 +184,8 @@ class HomeActivity : AppCompatActivity() {
         val lokasi = resources.getStringArray(R.array.lokasi)
         val arrayAdapter = ArrayAdapter(this, R.layout.item_dropdown, lokasi)
         binding.actLokasi.setAdapter(arrayAdapter)
+
+        getLocation()
     }
 
     private fun isLocationEnabled(): Boolean {
