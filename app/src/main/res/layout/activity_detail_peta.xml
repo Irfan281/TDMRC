@@ -23,8 +23,8 @@
         android:backgroundTint="@color/main_accent"
         android:contentDescription="@string/fab"
         android:src="@drawable/ic_baseline_map_24"
+        app:fabSize="auto"
         app:borderWidth="0dp"
-        app:fabSize="mini"
         app:layout_constraintBottom_toTopOf="@+id/rv_info"
         app:layout_constraintEnd_toEndOf="parent" />
 

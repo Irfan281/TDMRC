@@ -30,8 +30,6 @@ class GempaItem(private val gempa: GempaResponseItem) : BindableItem<ItemGempaBi
             tvRasa.text = "Dirasakan : ${gempa.dirasakan}"
             tvWaktu.text = formatDate(gempa.dateTime)
         }
-
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

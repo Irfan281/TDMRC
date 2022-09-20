@@ -53,6 +53,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         binding.refreshLayout.setOnRefreshListener {
             getLocation()
@@ -60,13 +61,17 @@ class HomeActivity : AppCompatActivity() {
 
             binding.refreshLayout.isRefreshing = false
         }
-        setGempa()
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        setGempa()
+        Log.d("setpeta", "setpeta 1")
+        getLocation()
 
 
         binding.tvDate.text = now().format("dd MMMM yyyy")
 
+        homeViewModel.getUserToken().observe(this) {
+            binding.tvNama.text = it.name
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -93,9 +98,10 @@ class HomeActivity : AppCompatActivity() {
                             index = 4
                         }
 
-                        binding.actLokasi.setText(binding.actLokasi.adapter.getItem(index).toString(), false)
+                        val current = binding.actLokasi.adapter.getItem(index).toString()
+                        binding.actLokasi.setText(current, false)
 
-                        setPeta(location.latitude, location.longitude)
+                        setPeta(location.latitude, location.longitude, current)
                     }
                 }
             } else {
@@ -108,36 +114,48 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun setPeta(myLat: Double, myLong: Double) {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setPeta(myLat: Double, myLong: Double, loc: String) {
         val petaAdapter = GroupieAdapter()
+        var token: String = ""
 
         homeViewModel.getUserToken().observe(this){
-            homeViewModel.getPeta(it.token)
+            token = it.token
         }
+
+        homeViewModel.getPeta(token)
 
         homeViewModel.peta.observe(this){
             when(it){
                 is Result.Success<*> -> {
+                    val map = mutableListOf<PetaResponseItem>()
+
                     for (i in it.data as List<PetaResponseItem>){
-                        val results = FloatArray(1)
-                        Location.distanceBetween(myLat, myLong, i.latitude.toDouble(), i.longitude.toDouble(), results)
-                        i.jarak = (results[0] / 1000).toDouble()
-
-                        Log.d("data tes", i.lokasi)
-
+                        Log.d("loc", i.lokasi)
+                        Log.d("loc", loc)
+                        if (loc.contains(i.kabupaten, true)){
+                            map.add(i)
+                        }
                     }
 
-                    val sortedList = it.data.sortedBy { it.jarak }
+                    for (i in map){
+                        val results = FloatArray(1)
+                        Location.distanceBetween(myLat, myLong, i.latitude.toDouble(), i.longitude.toDouble(), results)
+
+                        i.jarak = (results[0] / 1000).toDouble()
+                    }
+
+                    val sortedList = map.sortedBy { it.jarak }
 
                     for (i in sortedList){
                         petaAdapter.add(PetaItem(i, myLat, myLong))
                     }
+
                 }
                 is Result.Loading -> {
                     binding.refreshLayout.isRefreshing = it.isLoading
                 }
                 is Result.Error -> {
-                    Log.d("error ges", it.exception.toString())
                     Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
@@ -147,8 +165,7 @@ class HomeActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = petaAdapter
         }
-
-
+        petaAdapter.notifyDataSetChanged()
     }
 
     private fun setGempa() {
@@ -184,8 +201,6 @@ class HomeActivity : AppCompatActivity() {
         val lokasi = resources.getStringArray(R.array.lokasi)
         val arrayAdapter = ArrayAdapter(this, R.layout.item_dropdown, lokasi)
         binding.actLokasi.setAdapter(arrayAdapter)
-
-        getLocation()
     }
 
     private fun isLocationEnabled(): Boolean {

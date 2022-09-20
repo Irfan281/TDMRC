@@ -3,19 +3,15 @@ package com.irfan.tdmrc.ui.peta
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.irfan.tdmrc.BuildConfig
 import com.irfan.tdmrc.R
 import com.irfan.tdmrc.data.remote.PetaResponseItem
@@ -85,19 +81,33 @@ class DetailPetaActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(p0: GoogleMap) {
 
+        val origin = LatLng(intent.extras?.get("myLat") as Double, intent.extras?.get("myLong") as Double)
+        val destination = LatLng(peta.latitude.toDouble(), peta.longitude.toDouble())
 
         val placeDirections = EasyRoutesDirections(
-            originLatLng = LatLng(intent.extras?.get("myLat") as Double, intent.extras?.get("myLong") as Double),
-            destinationLatLng = LatLng(peta.latitude.toDouble(), peta.longitude.toDouble()),
+            originLatLng = origin,
+            destinationLatLng = destination,
             apiKey = BuildConfig.GMK_KEY,
-            showDefaultMarkers= true,
+            showDefaultMarkers= false,
             transportationMode = TransportationMode.DRIVING
         )
 
+        val bounds = LatLngBounds.Builder().include(origin).include(destination).build()
+
+
         p0.apply {
-            moveCamera(CameraUpdateFactory.newLatLng(LatLng(peta.latitude.toDouble(), peta.longitude.toDouble())))
-            animateCamera(CameraUpdateFactory.zoomTo( 14.0f ) )
+            addMarker(MarkerOptions()
+                .position(LatLng(peta.latitude.toDouble(), peta.longitude.toDouble()))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)))
+            addMarker(MarkerOptions()
+                .position(origin)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                .title("Lokasi Anda"))
+            animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 900,900,15))
         }
+
+
+
 
         val routeDrawer = EasyRoutesDrawer.Builder(p0)
             .pathWidth(10f)
@@ -123,10 +133,10 @@ class DetailPetaActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.fab.setOnClickListener {
-            val url = getGoogleMapsLink(placeDirections) //EasyRouteDirections instance like parameter
+            val url = getGoogleMapsLink(placeDirections)
 
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            startActivity(intent) //Open google maps native app
+            startActivity(intent)
         }
     }
 }
