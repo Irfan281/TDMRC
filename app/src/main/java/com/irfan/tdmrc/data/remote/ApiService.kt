@@ -24,5 +24,9 @@ interface ApiService {
         @Body params: HashMap<String, String>
     ) : AuthResponse
 
-
+    @POST("Maps")
+    suspend fun postPeta(
+        @Header("Authorization") header: String,
+        @Body params: HashMap<String, String>
+    ) : PetaResponseItem
 }

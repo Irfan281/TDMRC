@@ -34,6 +34,7 @@ import android.provider.Settings
 import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.location.LocationManagerCompat.isLocationEnabled
+import com.irfan.tdmrc.ui.UploadActivity
 import com.irfan.tdmrc.ui.settings.SettingsActivity
 import com.irfan.tdmrc.ui.tes.AllLocationActivity
 import me.moallemi.tools.extension.date.format

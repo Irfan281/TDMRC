@@ -63,4 +63,25 @@ class HomeViewModel(private val pref: SessionPreferences) : ViewModel(){
             }
         }
     }
+
+    fun setPeta(token: String, param : HashMap<String, String>) {
+        viewModelScope.launch {
+            flow {
+                val result = withContext(Dispatchers.IO){
+                    getApiService.postPeta("Bearer $token", param)
+                }
+
+                emit(result)
+            }.onStart {
+                _peta.value = Result.Loading(true)
+            }.onCompletion {
+                _peta.value = Result.Loading(false)
+            }.catch {
+                it.printStackTrace()
+                _peta.value = Result.Error(it)
+            }.collect{
+                _peta.value = Result.Success(it)
+            }
+        }
+    }
 }
