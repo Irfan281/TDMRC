@@ -49,4 +49,10 @@
     <string name="title_activity_detail_gempa">DetailGempaActivity</string>
     <string name="fab">fab</string>
     <string name="title_activity_detail_peta">DetailPetaActivity</string>
+    <string name="semua">Semua Kabupaten</string>
+    <string name="banda_aceh">Banda Aceh</string>
+    <string name="aceh_besar">Aceh Besar</string>
+    <string name="nagan_raya">Nagan Raya</string>
+    <string name="aceh_barat">Aceh Barat</string>
+    <string name="aceh_jaya">Aceh Jaya</string>
 </resources>

@@ -34,6 +34,8 @@ import android.provider.Settings
 import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.location.LocationManagerCompat.isLocationEnabled
+import com.irfan.tdmrc.ui.settings.SettingsActivity
+import com.irfan.tdmrc.ui.tes.AllLocationActivity
 import me.moallemi.tools.extension.date.format
 import me.moallemi.tools.extension.date.now
 
@@ -47,6 +49,7 @@ class HomeActivity : AppCompatActivity() {
     private val homeViewModel by viewModels<HomeViewModel> {
         ViewModelFactory(SessionPreferences.getInstance(dataStore))
     }
+    var token: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +74,14 @@ class HomeActivity : AppCompatActivity() {
 
         homeViewModel.getUserToken().observe(this) {
             binding.tvNama.text = it.name
+        }
+
+        binding.btnAll.setOnClickListener {
+            startActivity(Intent(this, AllLocationActivity::class.java).putExtra("tkn", token))
+        }
+
+        binding.imgAvatar.setOnClickListener{
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
 
@@ -117,7 +128,7 @@ class HomeActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     private fun setPeta(myLat: Double, myLong: Double, loc: String) {
         val petaAdapter = GroupieAdapter()
-        var token: String = ""
+
 
         homeViewModel.getUserToken().observe(this){
             token = it.token
@@ -131,8 +142,6 @@ class HomeActivity : AppCompatActivity() {
                     val map = mutableListOf<PetaResponseItem>()
 
                     for (i in it.data as List<PetaResponseItem>){
-                        Log.d("loc", i.lokasi)
-                        Log.d("loc", loc)
                         if (loc.contains(i.kabupaten, true)){
                             map.add(i)
                         }

@@ -27,6 +27,7 @@ class ViewModelFactory(private val preferences: SessionPreferences) : ViewModelP
                 HomeViewModel(preferences) as T
             }
 
+
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }

@@ -18,6 +18,7 @@ class SessionPreferences private constructor(private val dataStore: DataStore<Pr
         }
     }
 
+
     suspend fun login(token: String, name: String, id: String) {
         dataStore.edit { preferences ->
             preferences[TOKEN] = token

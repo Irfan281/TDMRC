@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="15dp"
+    android:elevation="20dp"
+    android:layout_marginVertical="4dp"
+    android:layout_marginHorizontal="2dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+<!--        "elev": "18",-->
+<!--        "keterangan": "-",-->
+<!--        "kondisi": "ada",-->
+<!--        "lokasi": "TEV Escape Building Peukan Bada",-->
+<!--        "waktu": "7 menit dari SMAN 1 Peukan Bada"-->
+
+        <TextView
+            android:ems="11"
+            android:id="@+id/lokasi"
+            style="@style/textblack.16"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Masjid Raya Baiturrahman"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_kabupaten"
+            android:layout_marginTop="4dp"
+            style="@style/textblack.14"
+            android:text="Kabupaten : Banda Aceh"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lokasi" />
+
+        <TextView
+            android:id="@+id/tv_kecamatan"
+            style="@style/textblack.14"
+            android:text="Kecamatan : Banda Raya"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_kabupaten" />
+
+
+        <TextView
+            android:ems="14"
+            android:id="@+id/tv_kondisi"
+            style="@style/textblack.14"
+            android:layout_marginTop="2dp"
+            android:text="Kondisi Rambu : Ada"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_kecamatan" />
+
+        <TextView
+            android:id="@+id/tv_waktu"
+            style="@style/textblack.14"
+            android:layout_marginStart="8dp"
+            android:ems="14"
+            android:layout_marginTop="2dp"
+            android:text="Waktu : 7 menit dari SMAN 1 Peukan Bada"
+            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_kondisi" />
+
+        <TextView
+            android:id="@+id/tv_elevasi"
+            style="@style/textblack.14"
+            android:text="Elevasi : 7"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_waktu" />
+
+        <TextView
+            android:id="@+id/tv_keterangan"
+            style="@style/textblack.14"
+            android:ems="14"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
+            android:text="Keterangan : Tidak ada selokan"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_elevasi"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="110dp"
+            android:layout_height="0dp"
+            android:src="@drawable/banda_aceh"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
+
