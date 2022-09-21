@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
@@ -60,5 +62,15 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        currentFocus?.let {
+            val closeKeyboard: InputMethodManager = getSystemService(
+                Context.INPUT_METHOD_SERVICE
+            ) as (InputMethodManager)
+            closeKeyboard.hideSoftInputFromWindow(it.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 }

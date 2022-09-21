@@ -14,16 +14,18 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="16dp"
+        android:layout_marginTop="48dp"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="vertical"
         tools:ignore="UnusedAttribute">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/textblack.16"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
             android:textSize="16sp"
+            android:drawableStart="@drawable/ic_baseline_login_24"
+            android:drawablePadding="8dp"
             android:text="Logout"/>
 
         <com.google.android.material.divider.MaterialDivider

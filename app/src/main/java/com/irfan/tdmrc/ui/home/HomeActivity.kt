@@ -99,16 +99,21 @@ class HomeActivity : AppCompatActivity() {
                         var index = 0
                         if (list[0].subAdminArea.contains("Banda Aceh",  true)) {
                             index = 0
+                            binding.imgHero.setImageResource(R.drawable.banda_aceh)
                         } else if (list[0].subAdminArea.contains("Aceh Besar",  true)) {
                             index = 1
+                            binding.imgHero.setImageResource(R.drawable.besar)
                         } else if (list[0].subAdminArea.contains("Nagan",  true)) {
                             index = 2
-                        } else if (list[0].subAdminArea.contains("Aceh Barat",  true)) {
+                            binding.imgHero.setImageResource(R.drawable.nagan)
+                        } else if (list[0].subAdminArea.contains("Barat",  true) || list[0].subAdminArea.contains("west",  true)) {
                             index = 3
+                            binding.imgHero.setImageResource(R.drawable.aceh_barat)
                         } else if (list[0].subAdminArea.contains("Aceh Jaya",  true)) {
                             index = 4
+                            binding.imgHero.setImageResource(R.drawable.aceh_jaya)
                         }
-
+                        Toast.makeText(this, list[0].subAdminArea, Toast.LENGTH_SHORT).show()
                         val current = binding.actLokasi.adapter.getItem(index).toString()
                         binding.actLokasi.setText(current, false)
 

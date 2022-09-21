@@ -6,6 +6,7 @@ import com.irfan.tdmrc.data.datastore.SessionPreferences
 import com.irfan.tdmrc.ui.daftar.RegisterViewModel
 import com.irfan.tdmrc.ui.home.HomeViewModel
 import com.irfan.tdmrc.ui.login.LoginViewModel
+import com.irfan.tdmrc.ui.settings.SettingsViewModel
 import com.irfan.tdmrc.ui.splash.SplashViewModel
 
 class ViewModelFactory(private val preferences: SessionPreferences) : ViewModelProvider.NewInstanceFactory() {
@@ -25,6 +26,9 @@ class ViewModelFactory(private val preferences: SessionPreferences) : ViewModelP
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(preferences) as T
+            }
+            modelClass.isAssignableFrom(SettingsViewModel::class.java) -> {
+                SettingsViewModel(preferences) as T
             }
 
 
